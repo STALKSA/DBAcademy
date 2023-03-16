@@ -1,0 +1,123 @@
+﻿<Window x:Class="StudentsManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentsManager"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="920" Width="1326"
+        Loaded="Window_Loaded">
+    <Grid RenderTransformOrigin="0.501,0.574" Margin="10,28,46,169">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="677*"/>
+            <ColumnDefinition Width="204*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="visitsDataGrid"  Margin="10,582,42,34" 
+                  AddingNewItem="visitsDataGrid_AddingNewItem" CommandManager.PreviewCanExecute="visitsDataGrid_PreviewCanExecute" Grid.ColumnSpan="2"/>
+        <DataGrid x:Name="subjectsDataGrid"  Margin="650,71,26,0" Grid.ColumnSpan="2" Height="190" VerticalAlignment="Top" 
+                  AddingNewItem="subjectsDataGrid_AddingNewItem"/>
+        <Label Content="Предметы" HorizontalAlignment="Left" Margin="650,39,0,0" VerticalAlignment="Top" Width="121" FontSize="18"/>
+        <Label Content="Посещения" HorizontalAlignment="Left" Margin="10,533,0,0" VerticalAlignment="Top" Width="124" FontSize="18" RenderTransformOrigin="0.543,2.853"/>
+        <DataGrid x:Name="groupsDataGrid" Margin="645,346,0,228" Grid.ColumnSpan="2" 
+                  AddingNewItem="groupsDataGrid_AddingNewItem"
+                  CurrentCellChanged="dataGrid_CurrentCellChanged"
+                  SelectionChanged="groupsDataGrid_SelectionChanged"/>
+        <Label Content="Группы" HorizontalAlignment="Left" Margin="645,304,0,0" VerticalAlignment="Top" Width="100" FontSize="18"/>
+
+        <GroupBox Header="Студенты" Margin="2,90,357,205" FontSize="16"
+                  >
+            <DockPanel x:Name="loadingStackPanel"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Top">
+                <StackPanel>
+                    <DataGrid x:Name="studentsDataGrid" Height="171" Width="NaN"
+                  AddingNewItem="studentsDataGrid_AddingNewItem"
+                  CurrentCellChanged="dataGrid_CurrentCellChanged"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding Name}"
+                                    Header="Имя" 
+                                    Width="70"/>
+                            <DataGridTextColumn Binding="{Binding Birthdat}"
+                                    Header="День рождения"
+                                    Width="130" />
+                            <DataGridTextColumn Binding="{Binding Email}"
+                                    Header="Мэил"
+                                    Width ="150"/>
+                            <DataGridTextColumn Binding="{Binding Group}"
+                                    Header=" Группа"
+                                    Width="100"
+                                    IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding VisitCount}"
+                                    Header="Кол-во посещений"
+                                    Width="200"
+                                    IsReadOnly="True"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <WrapPanel Orientation="Horizontal" >
+                        <StackPanel Orientation="Horizontal">
+                            <Label FontSize="16">Имя</Label>
+                            <TextBox x:Name="studentNameTextBox"
+                            Margin="7,3"
+                            TextWrapping="Wrap" Text="" Width="120"
+                            />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label FontSize="16">Дата рождения</Label>
+                            <DatePicker Name="studentBirthdayDatePicker" FontSize="16" Width="110"></DatePicker>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label FontSize="16">Email</Label>
+                            <TextBox x:Name="studentEmailTextBox" 
+                            Margin="7,3"
+                            TextWrapping="Wrap" Text="" Width="120"
+                            />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label FontSize="16" Margin="7,3, 4,4">Группа</Label>
+                            <ComboBox x:Name="studentGroupComboBox" 
+                                      Margin="7,3,4,4" 
+                                      Width="100"
+                                      FontSize="16"
+                                      IsEditable="False"
+                                      >
+
+                            </ComboBox>
+                        </StackPanel>
+                    </WrapPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="studentsSaveChangesButton" Grid.Column="0"
+                            Content="Сохранить изменения"
+                            Height="40" Margin="0,0,4,0" Click="studentsSaveChangesButton_Click" 
+                             />
+                        <Button Grid.Column="1"
+                            Content="Добавить как новый"
+                            Height="40"
+                            HorizontalAlignment="Stretch" 
+                            Click="Button_Click"
+                                
+                             />
+                    </Grid>
+                </StackPanel>
+
+            </DockPanel>
+        </GroupBox>
+        <TextBox x:Name="searchTextBox"
+                 HorizontalAlignment="Left" 
+                 Margin="10,26,0,0" 
+                 TextWrapping="Wrap" 
+                 Text="Поиск..." Foreground="Gray"
+                 GotFocus="searchTextBox_GotFocus"
+                 MouseUp="searchTextBox_MouseUp"
+                 VerticalAlignment="Top"
+                 Width="593" Height="45" 
+                 FontSize="18" TextChanged="searchTextBox_TextChanged"
+                 />
+    </Grid>
+</Window>

@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
+
 namespace StudentsManager
 {
     /// <summary>
@@ -29,6 +31,7 @@ namespace StudentsManager
 
         private AppDbContext _db = new AppDbContext();
         private ObservableCollection<Student> _students;
+        //private ObservableCollection<Group> _groups;
         private Student _student;
         public MainWindow()
         {
@@ -65,6 +68,7 @@ namespace StudentsManager
             {
                 Id = Guid.NewGuid(),
                 Name = "",
+                Birthday = DateTime.Now,
                 Email = ""
             };
 
@@ -182,25 +186,37 @@ namespace StudentsManager
 
         }
 
+        //int _textVersion = 0;
+
+        bool _isDefaultData = false;
         private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (searchTextBox.Text == "Поиск...") return;
-            
-            if (String.IsNullOrWhiteSpace(searchTextBox.Text) || searchTextBox.Text.Length < 3)
+            //_textVersion++;
+            if (string.IsNullOrEmpty(searchTextBox.Text))
             {
                 await LoadDefaultData();
                 return;
             }
 
-            var text = searchTextBox.Text;
-            await Task.Delay(TimeSpan.FromMilliseconds(1000));
-            var isTextRelevant = text == searchTextBox.Text;
-            if (isTextRelevant)
-            {
-                await Search(text);
-            }
+            await DebounceDispatcher.Debounce(1000, () => Search(searchTextBox.Text));
+           
+
+            //Debouncing(1000, () => Search(searchTextBox.Text));
+
+            //_isDefaultData = false;
+
+
+            //Debouncing
+            //var text = _textVersion;
+            //await Task.Delay(TimeSpan.FromMilliseconds(1000));
+
+            //if (text == _textVersion)
+            //{
+            //    await Search(searchTextBox.Text);
+            //}
         }
-        bool _isDefaultData = false;
+        
         private async Task LoadDefaultData()
         {
             if (_isDefaultData) return;

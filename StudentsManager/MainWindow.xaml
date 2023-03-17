@@ -94,7 +94,8 @@
                         </Grid.ColumnDefinitions>
                         <Button x:Name="studentsSaveChangesButton" Grid.Column="0"
                             Content="Сохранить изменения"
-                            Height="40" Margin="0,0,4,0" Click="studentsSaveChangesButton_Click" 
+                            Height="40" Margin="0,0,4,0" 
+                            Click="studentsSaveChangesButton_Click" 
                              />
                         <Button Grid.Column="1"
                             Content="Добавить как новый"

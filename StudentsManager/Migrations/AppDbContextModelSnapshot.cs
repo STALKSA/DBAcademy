@@ -29,6 +29,8 @@ namespace StudentsManager.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name");
+
                     b.ToTable("Groups");
                 });
 
@@ -54,6 +56,8 @@ namespace StudentsManager.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
+
+                    b.HasIndex("Name");
 
                     b.ToTable("Students");
                 });

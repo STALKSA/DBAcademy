@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using StudentsManager.ValueObjects;
 
 
 
@@ -153,14 +154,28 @@ namespace StudentsManager
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var student = new Student
+            Student student;
+            try
             {
-                Id = Guid.NewGuid(),
-                Name = studentNameTextBox.Text,
-                Birthday = studentBirthdayDatePicker.SelectedDate.GetValueOrDefault(),
-                Email = studentEmailTextBox.Text,
-                Group = (Group)studentGroupComboBox.SelectedItem
-            };
+                student = new Student
+                {
+                    Id = Guid.NewGuid(),
+                    Name = studentNameTextBox.Text,
+                    Birthday = studentBirthdayDatePicker.SelectedDate.GetValueOrDefault(),
+                    Email = studentEmailTextBox.Text,
+                    Group = (Group)studentGroupComboBox.SelectedItem,
+                    PassportNumber = new PassportNumber(studentPassportTextBox.Text),
+
+                };
+
+            } 
+            
+            catch (ArgumentException exc)
+            {
+                MessageBox.Show(exc.Message);
+                return;
+            }
+
             await _db.Students.AddAsync(student);
             await _db.SaveChangesAsync();
             _students.Add(student);

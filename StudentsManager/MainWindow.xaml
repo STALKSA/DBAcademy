@@ -39,20 +39,24 @@
                             <DataGridTextColumn Binding="{Binding Name}"
                                     Header="Имя" 
                                     Width="70"/>
-                            <DataGridTextColumn Binding="{Binding Birthdat}"
+                            <DataGridTextColumn Binding="{Binding Birthday}"
                                     Header="День рождения"
                                     Width="130" />
                             <DataGridTextColumn Binding="{Binding Email}"
                                     Header="Мэил"
-                                    Width ="150"/>
+                                    Width ="70"/>
                             <DataGridTextColumn Binding="{Binding Group}"
                                     Header=" Группа"
-                                    Width="100"
+                                    Width="80"
                                     IsReadOnly="True"/>
                             <DataGridTextColumn Binding="{Binding VisitCount}"
-                                    Header="Кол-во посещений"
-                                    Width="200"
+                                    Header="Посещений"
+                                    Width="110"
                                     IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding PassportNumber}"
+                                    Header="Номер паспорта"
+                                    Width="200"
+                                    />
 
                         </DataGrid.Columns>
                     </DataGrid>
@@ -85,6 +89,13 @@
                                       >
 
                             </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label FontSize="16">Паспорт</Label>
+                            <TextBox x:Name="studentPassportTextBox" 
+                            Margin="7,3"
+                            TextWrapping="Wrap" Text="" Width="230"
+                            />
                         </StackPanel>
                     </WrapPanel>
                     <Grid>

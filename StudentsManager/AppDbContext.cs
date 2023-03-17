@@ -26,6 +26,12 @@ namespace StudentsManager
                 e.Property(o => o.Name)
                 .HasColumnType("TEXT COLLATE NOCASE");
             });
+
+            modelBuilder.Entity<Student>()
+                .OwnsOne(s => s.PassportNumber, builder => builder.Property(it => it.Value)
+                .HasColumnName("PassportNumber")
+
+            );
         }
 
         public DbSet<Student> Students => Set<Student>();

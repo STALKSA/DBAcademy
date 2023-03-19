@@ -12,12 +12,12 @@
             <ColumnDefinition Width="677*"/>
             <ColumnDefinition Width="204*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="visitsDataGrid"  Margin="10,582,42,34" 
+        <DataGrid x:Name="visitsDataGrid"  Margin="2,571,50,45" 
                   AddingNewItem="visitsDataGrid_AddingNewItem" CommandManager.PreviewCanExecute="visitsDataGrid_PreviewCanExecute" Grid.ColumnSpan="2"/>
         <DataGrid x:Name="subjectsDataGrid"  Margin="650,71,26,0" Grid.ColumnSpan="2" Height="190" VerticalAlignment="Top" 
                   AddingNewItem="subjectsDataGrid_AddingNewItem"/>
         <Label Content="Предметы" HorizontalAlignment="Left" Margin="650,39,0,0" VerticalAlignment="Top" Width="121" FontSize="18"/>
-        <Label Content="Посещения" HorizontalAlignment="Left" Margin="10,533,0,0" VerticalAlignment="Top" Width="124" FontSize="18" RenderTransformOrigin="0.543,2.853"/>
+        <Label Content="Посещения" HorizontalAlignment="Left" Margin="10,534,0,0" VerticalAlignment="Top" Width="124" FontSize="18" RenderTransformOrigin="0.543,2.853"/>
         <DataGrid x:Name="groupsDataGrid" Margin="645,346,0,228" Grid.ColumnSpan="2" 
                   AddingNewItem="groupsDataGrid_AddingNewItem"
                   CurrentCellChanged="dataGrid_CurrentCellChanged"
@@ -60,6 +60,22 @@
 
                         </DataGrid.Columns>
                     </DataGrid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="prevButton" Grid.Column="0"
+                            Content="Предыдущая страница"
+                            Height="32" Margin="0,0,4,0" VerticalAlignment="Top" Click="prevButton_Click" 
+                            
+                             />
+                        <Button x:Name="nextButton"
+                            Content="Следующая страница" Grid.ColumnSpan="2" Margin="299,0,0,14" Click="nextButton_Click" 
+                            
+                                
+                             />
+                    </Grid>
                     <WrapPanel Orientation="Horizontal" >
                         <StackPanel Orientation="Horizontal">
                             <Label FontSize="16">Имя</Label>
@@ -105,14 +121,13 @@
                         </Grid.ColumnDefinitions>
                         <Button x:Name="studentsSaveChangesButton" Grid.Column="0"
                             Content="Сохранить изменения"
-                            Height="40" Margin="0,0,4,0" 
+                            Height="40" Margin="-1,10,5,-10" 
                             Click="studentsSaveChangesButton_Click" 
                              />
-                        <Button Grid.Column="1"
+                        <Button
                             Content="Добавить как новый"
-                            Height="40"
-                            HorizontalAlignment="Stretch" 
-                            Click="Button_Click"
+                            Height="40" 
+                            Click="Button_Click" Grid.ColumnSpan="2" Margin="299,10,0,-10"
                                 
                              />
                     </Grid>

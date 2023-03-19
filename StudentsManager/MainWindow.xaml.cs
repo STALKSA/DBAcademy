@@ -28,12 +28,12 @@ namespace StudentsManager
     /// </summary>
     public partial class MainWindow : Window
     {
-
-
+        
         private AppDbContext _db = new AppDbContext();
         private ObservableCollection<Student> _students;
-        //private ObservableCollection<Group> _groups;
+        private ObservableCollection<Group> _groups;
         private Student _student;
+        private const int studentsPerPage = 3;
         public MainWindow()
         {
             CultureInfo.CurrentCulture = new CultureInfo("ru-RU");
@@ -47,8 +47,10 @@ namespace StudentsManager
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            
 
             await LoadDefaultData();
+           
 
             //students.First(it => it.Name == "Inna")
             //    .Group = groups.First(it => it.Name == "PV112");
@@ -119,7 +121,7 @@ namespace StudentsManager
         {
             var subject = new Subject()
             {
-                Id = Guid.NewGuid(),
+                //Id = Guid.NewGuid(),
                 Name = ""
 
             };
@@ -133,7 +135,7 @@ namespace StudentsManager
         {
             var group = new Group()
             {
-                Id = Guid.NewGuid(),
+                //Id = Guid.NewGuid(),
                 Name = ""
 
             };
@@ -203,7 +205,8 @@ namespace StudentsManager
 
         //int _textVersion = 0;
 
-        bool _isDefaultData = false;
+        
+
         private async void searchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (searchTextBox.Text == "Поиск...") return;
@@ -231,30 +234,68 @@ namespace StudentsManager
             //    await Search(searchTextBox.Text);
             //}
         }
-        
+        bool _isDefaultData = false;
+        int _studentsPageIndex = 0;
+        int _studentsCount = 0;
+
         private async Task LoadDefaultData()
         {
             if (_isDefaultData) return;
             _isDefaultData = true;
 
-            List<Student> students = await _db.Students.ToListAsync();
-            _students = new ObservableCollection<Student>(students);
-            studentsDataGrid.ItemsSource = _students;
-            subjectsDataGrid.ItemsSource = await _db.Subjects.ToListAsync();
+            await LoadStudents();
+
             visitsDataGrid.ItemsSource = await _db.Visits
                 .Include(visit => visit.Student)
                 //.Include(visit => visit.Subject)
                 .ToListAsync();
 
-            List<Group> groups = await _db.Groups.ToListAsync();
-            groupsDataGrid.ItemsSource = groups;
+
+            _groups = new ObservableCollection<Group>(await _db.Groups.ToListAsync());
+            groupsDataGrid.ItemsSource = _groups;
             //studentGroupComboBox.Items.Clear();
-            studentGroupComboBox.ItemsSource = groups;
+            studentGroupComboBox.ItemsSource = _groups;
+
+
+        }
+
+        private async Task LoadStudents(string? textSearch = null)
+        {
+            _studentsCount = await _db.Students.CountAsync();
+            var query = _db.Students.AsQueryable();
+
+            if(!string.IsNullOrEmpty(textSearch))
+            {
+                query = query.Where(s => s.Name.Contains(textSearch)
+                 || s.Group.Name.Contains(textSearch));
+            }
+
+            _studentsCount = await query.CountAsync();
+            var pageCount = Math.Ceiling((double)_studentsCount / studentsPerPage);
+            var lastPageIndex = pageCount - 1;
+
+            List<Student> students = await _db.Students
+                .OrderBy(it => it.Name)
+                  .ThenBy(it => it.Birthday)
+                   .ThenBy(it => it.Email)
+                .Skip(_studentsPageIndex * studentsPerPage)
+                .Take(studentsPerPage)
+                .ToListAsync();
+            _students = new ObservableCollection<Student>(students);
+            studentsDataGrid.ItemsSource = _students;
+            //subjectsDataGrid.ItemsSource = await _db.Subjects.ToListAsync();
+
+            prevButton.IsEnabled = studentsPerPage > 0;
+            nextButton.IsEnabled = _studentsPageIndex < lastPageIndex;
+            
+
         }
 
         private async Task Search(string text)
         {
             _isDefaultData = false;
+
+            await LoadStudents();
 
             var studentsMatches = await _db.Students
                             .Where(s => EF.Functions.Like(s.Name, $"%{text}%"))
@@ -290,6 +331,23 @@ namespace StudentsManager
         private void searchTextBox_MouseUp(object sender, MouseButtonEventArgs e)
         {
             SelectAllSearchTextBoxText();
+        }
+
+        private async void nextButton_Click(object sender, RoutedEventArgs e)
+        {
+            _studentsPageIndex++;
+            await LoadStudents();
+
+        }
+
+        private async void prevButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(_studentsPageIndex == 0) {
+                return;
+            
+            }
+            _studentsPageIndex--;
+            await LoadStudents();
         }
     }
 }

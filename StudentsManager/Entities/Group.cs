@@ -11,7 +11,7 @@ namespace StudentsManager.Entities
     public class Group
     {
         public Guid Id { get; init; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public List<Student>? Students { get; set; }
         public int? StudentsCount => Students?.Count;
 

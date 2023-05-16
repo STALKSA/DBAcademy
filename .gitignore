@@ -1,1 +1,58 @@
 .idea/
+# Visual Studio 2022
+.vs/
+
+# Компилированные файлы
+bin/
+obj/
+
+# Кэши
+*.user
+
+# Игнорировать временные файлы
+*.tmp
+*.bak
+
+# Пакеты NuGet
+packages/
+
+# Файлы с настройками решения
+*.suo
+*.userprefs
+
+# Игнорировать файлы журналов
+*.log
+
+# Игнорировать кэш и временные файлы ReSharper
+_resharper*/
+*.resharper*
+*.DotSettings.user
+
+# Игнорировать папку пакетов NuGet
+packages/
+
+# Игнорировать файлы резервных копий
+*.bak
+*.backup
+*.bakup
+*.bkp
+*.bup
+*.tmp
+
+# Игнорировать файлы настроек
+*.suo
+*.user
+*.sln.docstates
+
+# Игнорировать файлы с настройками среды
+*.userprefs
+*.usertasks
+
+# Игнорировать временные файлы ReSharper
+*.ReSharper
+*.ReSharper.user
+
+# Игнорировать временные файлы CodeLens
+*.ipch/
+*.sdf
+*.opensdf
